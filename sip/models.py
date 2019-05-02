@@ -23,9 +23,9 @@ class Notificado(models.Model):
     bairro = models.CharField(max_length=100)
     cidade = models.CharField(max_length=100)
     uf = models.CharField(max_length=50, choices = STATE_CHOICES)
-    cep = models.CharField(max_length=8, null=True)
+    #cep = models.CharField(max_length=8, null=True)
     telefone = models.CharField(max_length=14)
-    email = models.CharField(max_length=100)
+    #email = models.CharField(max_length=100)
     
     def __str__(self):
         return self.nome
@@ -36,3 +36,73 @@ class Notificado(models.Model):
         self.bairro = self.bairro.upper()
         self.cidade = self.cidade.upper()
         super(Notificado, self).save(force_insert, force_update)
+
+ANOS = (
+        ('2010', '2010'),
+        ('2011', '2011'),
+        ('2012', '2012'),
+        ('2013', '2013'),
+        ('2014', '2014'),
+        ('2015', '2015'),
+        ('2016', '2016'),
+        ('2017', '2017'),
+        ('2018', '2018'),
+        ('2019', '2019'),
+        ('2020', '2020')
+    )
+
+class Processo(models.Model):
+    numero_processo = models.CharField(max_length=4)
+    ano_processo = models.CharField(max_length=4, choices = ANOS, default='2019', null=True, blank=True)
+    processo = models.CharField(max_length=20, unique=True)
+    notificado = models.ForeignKey(Notificado, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.processo)
+
+    class Meta:
+        unique_together = (("numero_processo", "ano_processo"),)
+
+    def save(self, *args, **kwargs):
+        self.processo = "%s/%s" % (str(self.numero_processo.zfill(4)) , self.ano_processo)
+        super(Processo, self).save()
+
+class LoteFiscalizacao(models.Model):
+    descricao = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return str(self.descricao)
+
+
+class LoteFiscalizacao(models.Model):
+    descricao = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return str(self.descricao)
+
+    def save(self, force_insert=False, force_update=False):
+        self.descricao = self.descricao.upper()
+        super(LoteFiscalizacao, self).save(force_insert, force_update)
+
+TIPO = (
+        ('ENTRADA', 'ENTRADA'),
+        ('SAÍDA', 'SAÍDA')
+    )
+
+class MovimentoFiscalizacao(models.Model):
+    processo = models.ForeignKey(Processo, on_delete=models.CASCADE)
+    lote = models.ForeignKey(LoteFiscalizacao, on_delete=models.CASCADE)
+    data = models.DateField(auto_now_add=True, verbose_name=u'Data',)
+    movimento = models.CharField(max_length=20, choices = TIPO, default='ENTRADA', null=True, blank=True)
+    observacao = models.CharField(max_length=40,  null=True, blank=True)
+    controle = models.CharField(max_length=40, unique=True)
+
+    def __str__(self):
+        return str(self.processo)
+
+    def save(self, *args, **kwargs):
+        self.controle = "%s-%s" % (self.processo, self.movimento)
+        super(MovimentoFiscalizacao, self).save()
+
+
+    
