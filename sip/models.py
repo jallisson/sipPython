@@ -13,7 +13,9 @@ from django.utils.html import mark_safe
 from django.db.models import F, FloatField, Sum
 from decimal import Decimal
 from django import forms
-
+from django.core.exceptions import (
+    NON_FIELD_ERRORS, FieldError, ImproperlyConfigured, ValidationError,
+)
 
 class Notificado(models.Model):
     nome = models.CharField(max_length=50)
@@ -93,16 +95,13 @@ class MovimentoFiscalizacao(models.Model):
     processo = models.ForeignKey(Processo, on_delete=models.CASCADE)
     lote = models.ForeignKey(LoteFiscalizacao, on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True, verbose_name=u'Data',)
-    movimento = models.CharField(max_length=20, choices = TIPO, default='ENTRADA', null=True, blank=True)
+    tipo = models.CharField(max_length=20, choices = TIPO, default='ENTRADA', null=True, blank=True)
     observacao = models.CharField(max_length=40,  null=True, blank=True)
-    controle = models.CharField(max_length=40, unique=True)
+    controle = models.CharField(max_length=40, default=None, unique=True, error_messages={'UniqueValidator':"This email has already been registered."})
 
     def __str__(self):
         return str(self.processo)
 
     def save(self, *args, **kwargs):
-        self.controle = "%s-%s" % (self.processo, self.movimento)
+        self.controle = "%s-%s" % (str(self.processo) , str(self.tipo))
         super(MovimentoFiscalizacao, self).save()
-
-
-    

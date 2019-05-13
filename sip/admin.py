@@ -28,7 +28,24 @@ class ProcessoAdmin(admin.ModelAdmin):
              model = Processo
 
 
+class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
+
+   list_display = ('processo','lote','tipo', 'observacao')
+   list_per_page = 50
+   search_fields = ('processo',)
+   #ordering = ('nome',)
+
+   fieldsets = [
+            ('Dados Principais', {
+                'classes': ('suit-tab', 'suit-tab-general',),
+                'fields': ['processo','tipo','lote','observacao'],
+            }),]
+
+   class Meta:
+             model = MovimentoFiscalizacao
+
+
 admin.site.register(Notificado)
 admin.site.register(Processo, ProcessoAdmin)
 admin.site.register(LoteFiscalizacao)
-admin.site.register(MovimentoFiscalizacao)
+admin.site.register(MovimentoFiscalizacao, MovimentoFiscalizacaoAdmin)
