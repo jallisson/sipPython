@@ -21,12 +21,16 @@ class ProcessoAdmin(admin.ModelAdmin):
    fieldsets = [
             ('Dados Principais', {
                 'classes': ('suit-tab', 'suit-tab-general',),
-                'fields': ['numero_processo','ano_processo','notificado'],
+                'fields': ['numero_processo','ano_processo','notificado','usuario'],
             }),]
 
    class Meta:
              model = Processo
 
+   def save_model(self, request, obj, form, change):
+	    if getattr(obj, 'usuario', None) is None:
+		    obj.usuario = request.user
+	    obj.save()
 
 class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
 
@@ -38,11 +42,16 @@ class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
    fieldsets = [
             ('Dados Principais', {
                 'classes': ('suit-tab', 'suit-tab-general',),
-                'fields': ['processo','tipo','lote','observacao'],
+                'fields': ['processo','tipo','lote','observacao','usuario'],
             }),]
 
    class Meta:
              model = MovimentoFiscalizacao
+
+   def save_model(self, request, obj, form, change):
+	    if getattr(obj, 'usuario', None) is None:
+		    obj.usuario = request.user
+	    obj.save()
 
 
 admin.site.register(Notificado)

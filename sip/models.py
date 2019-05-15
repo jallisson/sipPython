@@ -58,6 +58,7 @@ class Processo(models.Model):
     ano_processo = models.CharField(max_length=4, choices = ANOS, default='2019', null=True, blank=True)
     processo = models.CharField(max_length=20, unique=True)
     notificado = models.ForeignKey(Notificado, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.processo)
@@ -66,11 +67,11 @@ class Processo(models.Model):
         unique_together = (("numero_processo", "ano_processo"),)
 
     def save(self, *args, **kwargs):
-        self.processo = "%s/%s" % (str(self.numero_processo.zfill(4)) , self.ano_processo)
+        self.processo = "%s %s/%s" % ("FI",str(self.numero_processo.zfill(4)) , self.ano_processo)
         super(Processo, self).save()
 
 class LoteFiscalizacao(models.Model):
-    descricao = models.CharField(max_length=100, unique=True)
+    descricao = models.CharField(max_length=100, default=None, unique=True)
 
     def __str__(self):
         return str(self.descricao)
@@ -97,7 +98,8 @@ class MovimentoFiscalizacao(models.Model):
     data = models.DateField(auto_now_add=True, verbose_name=u'Data',)
     tipo = models.CharField(max_length=20, choices = TIPO, default='ENTRADA', null=True, blank=True)
     observacao = models.CharField(max_length=40,  null=True, blank=True)
-    controle = models.CharField(max_length=40, default=None, unique=True, error_messages={'UniqueValidator':"This email has already been registered."})
+    controle = models.CharField(max_length=40, default=None, unique=True)#, error_messages={'UniqueValidator':"This email has already been registered."})
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.processo)
