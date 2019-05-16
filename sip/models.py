@@ -58,11 +58,7 @@ class Processo(models.Model):
     ano_processo = models.CharField(max_length=4, choices = ANOS, default='2019', null=True, blank=True)
     processo = models.CharField(max_length=20, unique=True)
     notificado = models.ForeignKey(Notificado, on_delete=models.CASCADE)
-<<<<<<< HEAD
     usuario = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
-=======
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
->>>>>>> afda26e175b24db5a84c57d1fe27ffeff7613acf
 
     def __str__(self):
         return str(self.processo)
@@ -103,12 +99,7 @@ class MovimentoFiscalizacao(models.Model):
     tipo = models.CharField(max_length=20, choices = TIPO, default='ENTRADA', null=True, blank=True)
     observacao = models.CharField(max_length=40,  null=True, blank=True)
     controle = models.CharField(max_length=40, default=None, unique=True)#, error_messages={'UniqueValidator':"This email has already been registered."})
-<<<<<<< HEAD
     usuario = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
-=======
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
->>>>>>> afda26e175b24db5a84c57d1fe27ffeff7613acf
-
     def __str__(self):
         return str(self.processo)
 
