@@ -13,7 +13,7 @@ from .models import MovimentoFiscalizacao
 
 class ProcessoAdmin(admin.ModelAdmin):
 
-   list_display = ('processo','ano_processo','notificado')
+   list_display = ('processo','ano_processo','notificado','usuario')
    list_per_page = 50
    search_fields = ('processo',)
    #ordering = ('nome',)
@@ -27,10 +27,16 @@ class ProcessoAdmin(admin.ModelAdmin):
    class Meta:
              model = Processo
 
+   def save_model(self, request, obj, form, change):
+            if getattr(obj, 'usuario', None) is None:
+                    obj.usuario = request.user
+            #if getattr(obj, 'agencia', None) is None:
+            #        obj.agencia = request.user.groups.first()
+            obj.save()
 
 class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
 
-   list_display = ('processo','lote','tipo', 'observacao')
+   list_display = ('processo','data','lote','tipo','observacao','usuario')
    list_per_page = 50
    search_fields = ('processo',)
    #ordering = ('nome',)
@@ -43,6 +49,13 @@ class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
 
    class Meta:
              model = MovimentoFiscalizacao
+
+   def save_model(self, request, obj, form, change):
+            if getattr(obj, 'usuario', None) is None:
+                    obj.usuario = request.user
+            #if getattr(obj, 'agencia', None) is None:
+            #        obj.agencia = request.user.groups.first()
+            obj.save()
 
 
 admin.site.register(Notificado)
