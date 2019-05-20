@@ -21,7 +21,7 @@ class ProcessoAdmin(admin.ModelAdmin):
    fieldsets = [
             ('Dados Principais', {
                 'classes': ('suit-tab', 'suit-tab-general',),
-                'fields': ['numero_processo','ano_processo','notificado','usuario'],
+                'fields': ['numero_processo','ano_processo','notificado'],
             }),]
 
    class Meta:
@@ -36,19 +36,24 @@ class ProcessoAdmin(admin.ModelAdmin):
 
 class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
 
-   list_display = ('processo','data','lote','tipo','observacao','usuario')
+   list_display = ('processo','notificado','data','lote','tipo','observacao','usuario')
    list_per_page = 50
-   search_fields = ('processo',)
+   search_fields = ('processo__processo', 'processo__notificado__nome')
    #ordering = ('nome',)
 
    fieldsets = [
             ('Dados Principais', {
                 'classes': ('suit-tab', 'suit-tab-general',),
-                'fields': ['processo','tipo','lote','observacao','usuario'],
+                'fields': ['processo','tipo','lote','observacao'],
             }),]
 
    class Meta:
              model = MovimentoFiscalizacao
+
+   def notificado(self, obj):
+          return obj.processo.notificado.nome
+         #get_name.admin_order_field  = 'name'  #Allows column order sorting
+          notificado.short_description = 'Notificado'  #Renames column head
 
    def save_model(self, request, obj, form, change):
             if getattr(obj, 'usuario', None) is None:
@@ -57,8 +62,18 @@ class MovimentoFiscalizacaoAdmin(admin.ModelAdmin):
             #        obj.agencia = request.user.groups.first()
             obj.save()
 
+class NotificadoAdmin(admin.ModelAdmin):
 
-admin.site.register(Notificado)
+   list_display = ('nome','cnpj','cpf')
+   list_per_page = 50
+   search_fields = ('nome',)
+   #ordering = ('nome',)
+
+   class Meta:
+             model = Notificado
+
+
+admin.site.register(Notificado, NotificadoAdmin)
 admin.site.register(Processo, ProcessoAdmin)
 admin.site.register(LoteFiscalizacao)
 admin.site.register(MovimentoFiscalizacao, MovimentoFiscalizacaoAdmin)

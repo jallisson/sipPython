@@ -70,6 +70,8 @@ class Processo(models.Model):
         self.processo = "%s %s/%s" % ("FI",str(self.numero_processo.zfill(4)) , self.ano_processo)
         super(Processo, self).save()
 
+
+
 class LoteFiscalizacao(models.Model):
     descricao = models.CharField(max_length=100, default=None, unique=True)
 
