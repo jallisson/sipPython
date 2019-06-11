@@ -58,7 +58,10 @@ class Processo(models.Model):
     ano_processo = models.CharField(max_length=4, choices = ANOS, default='2019', null=True, blank=True)
     processo = models.CharField(max_length=20, unique=True)
     notificado = models.ForeignKey(Notificado, on_delete=models.CASCADE)
+    #pdf = models.FileField(default=None)
     usuario = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+
+    
 
     def __str__(self):
         return str(self.processo)
@@ -71,16 +74,8 @@ class Processo(models.Model):
         super(Processo, self).save()
 
 
-
 class LoteFiscalizacao(models.Model):
     descricao = models.CharField(max_length=100, default=None, unique=True)
-
-    def __str__(self):
-        return str(self.descricao)
-
-
-class LoteFiscalizacao(models.Model):
-    descricao = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return str(self.descricao)
@@ -102,9 +97,29 @@ class MovimentoFiscalizacao(models.Model):
     observacao = models.CharField(max_length=40,  null=True, blank=True)
     controle = models.CharField(max_length=40, default=None, unique=True)#, error_messages={'UniqueValidator':"This email has already been registered."})
     usuario = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+   
     def __str__(self):
         return str(self.processo)
 
     def save(self, *args, **kwargs):
         self.controle = "%s-%s" % (str(self.processo) , str(self.tipo))
         super(MovimentoFiscalizacao, self).save()
+
+TIPOS = (
+        ('LISTA LOTE FISCALIZAÇÃO', 'LISTA LOTE FISCALIZAÇÃO'),
+    )
+
+class Relatorio(models.Model):
+    tipo = models.CharField(max_length=30, choices = TIPOS, default='LISTA LOTE FISCALIZAÇÃO')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    lote = models.ForeignKey(LoteFiscalizacao, on_delete=models.CASCADE, null=True, blank=True)
+
+    def imprimir(self):
+        return mark_safe("<a target='_blank' href='%s'>Imprimir</a>" % self.get_absolute_url())
+    imprimir.allow_tags = True
+
+    def get_absolute_url(self):
+        return reverse('mfiscalizacao_data_list', args=[self.pk, ])
+
+    def __str__(self):
+        return str(self.lote)
