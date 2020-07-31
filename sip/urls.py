@@ -3,7 +3,7 @@ from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 from django.views.generic.base import RedirectView
 from django.conf import settings
-from django.conf.urls.static import static
+#from django.conf.urls.static import static
 
 from . import views
 #from .views import VendaDetail
@@ -21,6 +21,6 @@ urlpatterns = [
 	url(r'^relatorio/(?P<pk>\d+)/$', RelatorioDetail.as_view(), name='mfiscalizacao_data_list'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATIC_ROOT)
+#if settings.DEBUG:
+#    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#    urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATIC_ROOT)

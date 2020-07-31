@@ -144,8 +144,8 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
-MEDIA_URL = '/static/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+#MEDIA_URL = '/static/media/'
 
 DECIMAL_SEPARATOR = ','
 USE_THOUSAND_SEPARATOR = True

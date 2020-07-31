@@ -30,7 +30,7 @@ admin.site.site_header = 'Sip'
 admin.site.index_title = 'Sip - Sistema de Informação de Processos'
 admin.site.site_title = 'Sip - Sistema de Informação de Processos'
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATIC_ROOT)
+#if settings.DEBUG:
+#    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#    urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATIC_ROOT)
 
