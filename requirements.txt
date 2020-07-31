@@ -1,0 +1,9 @@
+asgiref==3.2.10
+Django==2.2.1
+django-jet==1.0.8
+django-localflavor==3.0.1
+mysqlclient==2.0.1
+python-stdnum==1.13
+pytz==2020.1
+six==1.15.0
+sqlparse==0.3.1
