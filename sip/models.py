@@ -61,7 +61,6 @@ class Processo(models.Model):
     #pdf = models.FileField(default=None)
     usuario = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
 
-    
 
     def __str__(self):
         return str(self.processo)
@@ -83,6 +82,8 @@ class LoteFiscalizacao(models.Model):
     def save(self, force_insert=False, force_update=False):
         self.descricao = self.descricao.upper()
         super(LoteFiscalizacao, self).save(force_insert, force_update)
+
+
 
 TIPO = (
         ('ENTRADA', 'ENTRADA'),
@@ -123,3 +124,20 @@ class Relatorio(models.Model):
 
     def __str__(self):
         return str(self.lote)
+
+POTENCIAL = (
+        ('ALTA', 'ALTA'),
+        ('MÉDIA', 'MÉDIA'),
+        ('BAIXA', 'BAIXA')
+    )
+
+class Atividade(models.Model):
+    nome = models.CharField(max_length=100, default=None, unique=True)
+    potencial_poluidor = models.CharField(max_length=30, choices = POTENCIAL, default='ALTA')
+
+    def __str__(self):
+        return str(self.nome)
+
+    def save(self, force_insert=False, force_update=False):
+        self.nome = self.nome.upper()
+        super(Atividade, self).save(force_insert, force_update)

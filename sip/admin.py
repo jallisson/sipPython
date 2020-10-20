@@ -4,6 +4,7 @@ from .models import Processo
 from .models import LoteFiscalizacao
 from .models import MovimentoFiscalizacao
 from .models import Relatorio
+from .models import Atividade
 from django import forms
 from django.forms.models import BaseInlineFormSet
 #from .models import Processo
@@ -124,6 +125,15 @@ class LoteFiscalizacaoAdmin(admin.ModelAdmin):
              model = LoteFiscalizacao
 
 
+class AtividadeAdmin(admin.ModelAdmin):
+
+   list_display = ('nome','potencial_poluidor',)
+   list_per_page = 50
+   search_fields = ('nome','potencial_poluidor',)
+   #ordering = ('nome',)
+
+   class Meta:
+             model = Atividade
 
 
 admin.site.register(Relatorio, RelatorioAdmin)
@@ -131,3 +141,4 @@ admin.site.register(Notificado, NotificadoAdmin)
 admin.site.register(Processo, ProcessoAdmin)
 admin.site.register(LoteFiscalizacao, LoteFiscalizacaoAdmin)
 admin.site.register(MovimentoFiscalizacao, MovimentoFiscalizacaoAdmin)
+admin.site.register(Atividade, AtividadeAdmin)
