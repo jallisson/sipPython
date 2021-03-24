@@ -50,12 +50,17 @@ ANOS = (
         ('2017', '2017'),
         ('2018', '2018'),
         ('2019', '2019'),
-        ('2020', '2020')
+        ('2020', '2020'),
+        ('2021', '2021'),
+        ('2022', '2022'),
+        ('2023', '2023'),
+        ('2024', '2024'),
+        ('2025', '2025'),
     )
 
 class Processo(models.Model):
     numero_processo = models.CharField(max_length=4)
-    ano_processo = models.CharField(max_length=4, choices = ANOS, default='2019', null=True, blank=True)
+    ano_processo = models.CharField(max_length=4, choices = ANOS, default='2020', null=True, blank=True)
     processo = models.CharField(max_length=20, unique=True)
     notificado = models.ForeignKey(Notificado, on_delete=models.CASCADE)
     #pdf = models.FileField(default=None)
