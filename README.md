@@ -40,22 +40,6 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-## Implementações
-
-- Cadastro de produtos, clientes, empresas, fornecedores e transportadoras
-- Login/Logout
-- Criação de perfil para cada usuário.
-- Definição de permissões para usuários.
-- Criação e geração de PDF para orçamentos e pedidos de compra/venda
-- Módulo financeiro (Plano de Contas, Fluxo de Caixa e Lançamentos)
-- Módulo para controle de estoque
-- Módulo fiscal:
-    - Geração e armazenamento de notas fiscais
-    - Validação do XML de NF-e/NFC-es
-    - Emissão, download, consulta e cancelamento de NF-e/NFC-es **(Testar em ambiente de homologação)**
-    - Comunicação com SEFAZ (Consulta de cadastro, inutilização de notas, manifestação do destinatário)
-- Interface simples e em português
-
 ## Créditos
 
 - [jallisson](https://github.com/jallisson)
